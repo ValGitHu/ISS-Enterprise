@@ -1,0 +1,7 @@
+Mettre les noms, prénoms des auteurs du projet,
+si possible une adresse mail...
+
+Préciser brièvement les tâches personnelles de chaque étudiant du groupe.
+
+raspberry paquets :
+pygame, pyserial, pynmea, request, rpi, 
