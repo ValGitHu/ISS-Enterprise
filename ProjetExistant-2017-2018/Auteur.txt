@@ -1,0 +1,9 @@
+﻿Automatisation du positionnement d'une parabole située sur un camion de Strategic Telecom Sécurité Civile et permettant de se connecter à internet par liaison satellite.
+
+Gilles Devillers (gildev@gmail.com) Programmation de l'interface graphique, intégration du code, configuration du Raspberry Pi, développement des classes, réalisation du boîtier, rédaction du mode d'emploi, aide sur les différentes parties du projet.
+
+Lise Chauvin (lise.chauvin@etu.univ-tours.fr) Algorithme, programmation et essais du positionnement automatique de la parabole. Détermination du satellite auquel se connecter en fonction de la position du camion
+. 
+Alexandre Minot (alexandre.minot@etu.univ-tours.fr) Étude et essais du vérin et du rotor.
+
+Thomas Grageon (thomas.grageon@etu.univ-tours.fr) Étude et essais du vérin et de la boussole. Réalisation de la carte électronique et du boîtier.
