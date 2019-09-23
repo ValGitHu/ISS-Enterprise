@@ -12,4 +12,4 @@ positionnementAuto à refaire
 
 Tester dernier programme non tester
 
-ANUS
+Rajouter la résistance de pull-up pour  piloter vérin 
