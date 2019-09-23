@@ -9,3 +9,7 @@ Isoler dans le projet :
 Pour le placement du vérin, regarder la correction apportée l'année dernière 
 
 positionnementAuto à refaire
+
+Tester dernier programme non tester
+
+ANUS
