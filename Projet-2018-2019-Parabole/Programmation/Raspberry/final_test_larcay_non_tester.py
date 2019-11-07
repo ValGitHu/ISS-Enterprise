@@ -38,10 +38,11 @@ class Rotor:
 	def tourner(self, angle):
 		if self.ser is not None:
 			angle = int(angle)
-			if (angle<100):
+			if (angle<10):
+                            commande = "M00" + repr(angle) + "\r\n"
+                        elif (angle<100):
                             commande = "M0" + repr(angle) + "\r\n"
-
-                        else:
+			else:
                             commande = "M" + repr(angle) + "\r\n"
 			print(commande)
 			self.ser.write(commande.encode('latin-1'))
