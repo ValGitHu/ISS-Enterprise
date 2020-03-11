@@ -250,7 +250,9 @@ verin = Verin(10, 8, 12)
 
 ## ----- Button ----- ##
 class Button:
+    """cette classe permet de créer des boutons"""
     def __init__(self, fond, text,colortxt, color, font, dx, dy, visible):
+        """On créé le bouton avec: la fenetre où il est créé, son texte, la couleur du texte, la couleur du fond, sa police d'écriture, sa position, et sa visibilité ou non"""
         self.fond = fond
         self.text = text
         self.color = color
@@ -267,7 +269,7 @@ class Button:
         self.fond.blit(self.title, self.textpos)
 
     def update_button(self, fond, action=None):
-
+        """effectue l'action lors de la pression du bouton et permet un retour visuel de l'appuis"""
 
         self.fond = fond
         mouse_xy = pygame.mouse.get_pos()
@@ -301,18 +303,20 @@ class Button:
             self.fond.blit(self.title, self.textpos)
 
     def display_button(self, fond):
+        """dessine le bouton s'il est visisble"""
         if(self.state):
             self.fond = fond
             self.rect = pygame.draw.rect(self.fond, self.color, self.textpos)
             self.fond.blit(self.title, self.textpos)
 
     def destroy_button(self):
+        """supprime le bouton"""
         self.text = ""
         self.state = False
 
 ## ----- IHM ----- ##
 class IHM:
-
+    """Classe permettant de gérer toute l'interface"""
     def __init__(self):
         self.screen = pygame.display.set_mode((720,480))#(720,480))
         self.loop = True
