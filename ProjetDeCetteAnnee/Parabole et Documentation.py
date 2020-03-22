@@ -251,63 +251,62 @@ verin = Verin(10, 8, 12)
 ## ----- Button ----- ##
 class Button:
     """cette classe permet de créer des boutons"""
-    def __init__(self, fond, text,colortxt, color, font, dx, dy, visible):
+    def __init__(self, fond, text,colortxt, color, font, dx, dy, visible): #self.numero0 = Button(self.fond, " 0 ", BLACK, ORANGE, self.PoliceBouttons, 260 , 450, True)
         """On créé le bouton avec: la fenetre où il est créé, son texte, la couleur du texte, la couleur du fond, sa police d'écriture, sa position, et sa visibilité ou non"""
-        self.fond = fond
-        self.text = text
-        self.color = color
-        self.font = font
-        self.dec = dx, dy
-        self.etat = False
-        self.state = visible  # enable or not
+        self.fond = fond #écran où sera créé le bouton
+        self.text = text #texte du bouton
+        self.color = color #couleur du bouton
+        self.font = font #police d'écriture
+        self.dec = dx, dy #position
+        self.etat = False #appuyé ou non
+        self.state = visible  #visible ou pas
         self.title = self.font.render(self.text, True, colortxt)
         textpos = self.title.get_rect()
         textpos.centerx = self.fond.get_rect().centerx + self.dec[0]
         textpos.centery = self.dec[1]
         self.textpos = [textpos[0], textpos[1], textpos[2], textpos[3]]
-        self.rect = pygame.draw.rect(self.fond, self.color, self.textpos)
-        self.fond.blit(self.title, self.textpos)
+        self.rect = pygame.draw.rect(self.fond, self.color, self.textpos)#dessine un rectangle pour le bouton
+        self.fond.blit(self.title, self.textpos) #fait apparaitre le bouton
 
     def update_button(self, fond, action=None):
         """effectue l'action lors de la pression du bouton et permet un retour visuel de l'appuis"""
 
         self.fond = fond
-        mouse_xy = pygame.mouse.get_pos()
-        over = self.rect.collidepoint(mouse_xy)
-        if(self.state):
+        mouse_xy = pygame.mouse.get_pos() #récupère la position de la souris
+        over = self.rect.collidepoint(mouse_xy) #true si la souris est sur le bouton
+        if(self.state): #s'il est visible
 
-            if (over and not self.etat):
-                action()
-                self.etat = True
-                if self.color == ORANGE:
-                    self.color = ORANGEFONCE
+            if (over and not self.etat): #si on appuie sur le bouton
+                action() #exécute la fonction associée au bouton
+                self.etat = True #met son état à true
+                if self.color == ORANGE: #si le bouton est orange
+                    self.color = ORANGEFONCE #met le boton en orange foncé
 
-                if self.color == BLACK:
-                    self.color = RED
+                if self.color == BLACK: #si le bouton est noir
+                    self.color = RED #met le boton en rouge foncé
 
-            # action()
-            # à la bonne couleur
-            else:
-                if(self.etat):
-                    action()
-                self.etat = False
-                #print(self.text, self.color, ORANGEFONCE, ORANGE)
-                if self.color == ORANGEFONCE:
-                    self.color = ORANGE
+           
+            else: #au relachement du bouton
+                if(self.etat): #s'il est visible
+                    action() #faire l'action associée
+                self.etat = False #met le bouton à l'état bas
+                
+                if self.color == ORANGEFONCE: #si le bouton est orange foncé
+                    self.color = ORANGE #le mettre en orange
 
 
-                if self.color == RED:
-                    self.color = BLACK
+                if self.color == RED: #si le bouton est rouge
+                    self.color = BLACK #le mettre en orange
 
             self.rect = pygame.draw.rect(self.fond, self.color, self.textpos)
-            self.fond.blit(self.title, self.textpos)
+            self.fond.blit(self.title, self.textpos) #redessine le bouton
 
     def display_button(self, fond):
         """dessine le bouton s'il est visisble"""
-        if(self.state):
+        if(self.state): #s'il est visible
             self.fond = fond
             self.rect = pygame.draw.rect(self.fond, self.color, self.textpos)
-            self.fond.blit(self.title, self.textpos)
+            self.fond.blit(self.title, self.textpos) #redessine le bouton
 
     def destroy_button(self):
         """supprime le bouton"""
@@ -318,48 +317,56 @@ class Button:
 class IHM:
     """Classe permettant de gérer toute l'interface"""
     def __init__(self):
-        self.screen = pygame.display.set_mode((720,480))#(720,480))
-        self.loop = True
-        #print(self.screen.get_size())
-        self.mouse_cursor_visible = False
+        """initialisation de l'ihm"""
+        self.screen = pygame.display.set_mode((720,480))#(720,480)) #dimention de l'écran
+        self.loop = True #faire tourner en boucle l'affichage
+        self.mouse_cursor_visible = False #rend le curseur de la souris visible à true
         # Définition de la police
-        self.big = pygame.font.SysFont('Helvetica',45)
+        self.big = pygame.font.SysFont('Helvetica',45) 
         self.small = pygame.font.SysFont('Helvetica',25)
         self.PoliceBouttons = pygame.font.SysFont('Helvetica',60)
 
         self.create_fond()
         self.create_button()
-        azimPara, elevPara, lat, longi = GPS()
+        azimPara, elevPara, lat, longi = GPS() #récupère les valeurs de la fonction gps
         self.azimPara = azimPara
         self.elevPara = elevPara
         self.lat = lat
         self.longi = longi
         #self.update_textes(self)
     def update_textes(self):
+        """définition du texte à afficher"""
         #print angleIHM
-        self.textes = [["Positionnement de l'Antenne",WHITE, self.big,0,15,True],
+        self.textes = [
+                        ["Positionnement de l'Antenne",WHITE, self.big,0,15,True],
                         ["Azimuth de la parabole : " + str(int(self.azimPara)),WHITE, self.small,-200,60,True],
                         ["Elevation de la parabole : " + str(int(self.elevPara)),WHITE, self.small,-200,100,True],
                         ["Latitude : "+ str(int(self.lat)), WHITE, self.small,-280,140,True],
                         ["Longitude : "+ str(int(self.longi)),WHITE, self.small,-280,180,True],
                         ["Nord magnetique : "+angleIHM,WHITE,self.small,200,200,True],
-                        ["Mettez le rotor a 0 degre",WHITE, self.big,0,100,False]]
+                        ["Mettez le rotor a 0 degre",WHITE, self.big,0,100,False]
+                      ]
 
     def create_fond(self):
+        """créaton du fond"""
         # Image de la taille de la fenêtre
         self.fond = pygame.Surface(self.screen.get_size())
         self.fond.fill(GREY)
+        
     def image(self):
-        strategic = pygame.image.load("/home/pi/Desktop/StrategicTelecom.png").convert_alpha()
+        """affichage de l'image""""
+        strategic = pygame.image.load("/home/pi/Desktop/StrategicTelecom.png").convert_alpha() #bien mettre le chemin de l'image en entier
         strategic = self.fond.blit(strategic, (650,0))
-        pass
+ 
     def rect(self):
+        """dessine les rectangles pour encadrer les textes"""
         if(self.textes[2][5]):  paraelev = pygame.draw.rect(self.fond,WHITE, [0,88,315,25],2)
         if(self.textes[1][5]):  paraazi  = pygame.draw.rect(self.fond,WHITE, [0,48,315,25],2)
         if(self.textes[4][5]):  satangle = pygame.draw.rect(self.fond,WHITE, [0,128,315,25],2)
         if(self.textes[3][5]):  satelev = pygame.draw.rect(self.fond,WHITE, [0,168,315,25],2)
 
     def create_button(self):
+        """création des boutons     Boutton(self.fond, " texte ",couleur du texte, couleur du bouton, police du bouton,position x, position y, visible)"""
         self.verin_baisse = Button(self.fond, " ^ ",BLACK, ORANGE, self.PoliceBouttons,-260,330, True)
         self.verin_hausse = Button(self.fond, " v ", BLACK, ORANGE, self.PoliceBouttons,-260 , 450, True)
         self.rotor_horaire  = Button(self.fond, " < ", BLACK, ORANGE, self.PoliceBouttons,-325,390, True)
@@ -384,9 +391,10 @@ class IHM:
 
 
     def display_text(self, text, color, font, dx, dy, visible):
-        '''Ajout d'un texte sur fond. Décalage dx, dy par rapport au centre.
-        '''
-        if(visible):
+        """Ajout d'un texte sur fond. Décalage dx, dy par rapport au centre."""
+        
+        if(visible): #si le texte est visible
+            #apparition du textre"""
             mytext = font.render(text, True, color)  # True pour antialiasing
             textpos = mytext.get_rect()
             textpos.centerx = self.fond.get_rect().centerx + dx
@@ -394,6 +402,7 @@ class IHM:
             self.fond.blit(mytext, textpos)
 
     def affichage_variable(self):
+        """affiche l'angle rentré grace au pad"""
         angle_afficher = afficher()
         print (angle_afficher)
         #mettre angle sur ihm
@@ -402,11 +411,12 @@ class IHM:
         self.screen.blit(angle_screen, (100, 100))
 
     def infinite_loop(self):
-        self.update_textes()
+        """boucle infinie qui scrute les actions sur l'écran"""
+        self.update_textes() #actualise les textes
         while self.loop:
-            self.create_fond()
+            self.create_fond() #affiche le fond
 
-            # Boutons
+            # affiche les boutons
             self.verin_baisse.display_button(self.fond)
             self.verin_hausse.display_button(self.fond)
             self.rotor_horaire.display_button(self.fond)
@@ -430,9 +440,13 @@ class IHM:
             #self.auto_verin.display_button(self.fond)
 
             for event in pygame.event.get():
+                #pour chaque évenment sur l'écran tactile
 
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    #si on appuie sur l'écran on exécute toutes les actions suivante en sachant que les fonctions détectent si on appuie sur un bouton ou pas
+                    #il est obligatoire de mettre une focntion dans action
+                    
                     self.rotor_horaire.update_button(self.fond, action=rotorhor)
                     self.rotor_antihoraire.update_button(self.fond, action=rotorant)
                     self.verin_baisse.update_button(self.fond, action=monterverin)
@@ -458,6 +472,8 @@ class IHM:
                     #self.update_textes()
 
                 elif event.type == pygame.MOUSEBUTTONUP:
+                    #détecte un relachement de pression sur l'écran
+                    #permet un retour visuel de l'appuie sur les boutons 
                     self.rotor_horaire.update_button(self.fond, action=stop )
                     self.rotor_antihoraire.update_button(self.fond, action=stop  )
                     self.verin_baisse.update_button(self.fond, action=stop  )
@@ -482,9 +498,10 @@ class IHM:
             #self.update_textes()
             #print azim
 
-            self.rect()
-            self.image()
+            self.rect() #affiche les rectangles
+            self.image() #affiche l'image
             for text in self.textes:
+                #affiche les textes
                 self.display_text(text[0], text[1], text[2],text[3],text[4],text[5])
 
             # Ajout du fond dans la fenêtre
@@ -511,11 +528,11 @@ def monterverin():
     verin.monter()
     
 def calibrationRotor():
-    #Larcay.create_fond()
+    #affiche le bouton valider
     Larcay.Valider.display_button(Larcay.fond)
     Larcay.Valider.state = True
 
-
+    #supprime tous les autres boutons
     Larcay.verin_baisse.destroy_button()
     Larcay.verin_hausse.destroy_button()
     #Larcay.rotor_horaire.destroy_button()
@@ -534,7 +551,8 @@ def calibrationRotor():
     Larcay.nouveau.destroy_button()
     Larcay.auto.destroy_button()
     Larcay.Calibration.destroy_button()
-
+    
+    #change l'affichage des textes
     Larcay.textes[0][0] = "Calibration du rotor"
     Larcay.textes[1][5] = False
     Larcay.textes[2][5] = False
@@ -561,11 +579,12 @@ def calibrationRotor():
     # rotor.calibrationDroite() #360
     # #Remise de l'écran initial
 
-garder =  []
+garder =  [] #variable pour savoir quels chiffres sont à garder quand on rentre l'angle avec le pad
 
 def nouveau():
+    """permet d'entrer un nouvel angle"""
     global angleIHM
-    del garder[0:100]
+    del garder[0:100]#supprime les valeurs de la variable
     #print("av reset", angleIHM)
     angleIHM=""
     print("reset", angleIHM)
@@ -573,20 +592,21 @@ def nouveau():
     return garder
 
 def saisie(para):
+    """ajoute le chiffre entré à l'angle"""
     global angleIHM
     garder.append(para)
-    del garder[3:100000]
+    del garder[3:100000]#suprime les caractères rentrés en trop
     print (garder)
     angleIHM = ""
     #print(len(garder))
 
     for i in garder:
-        angleIHM += i
+        angleIHM += i #créé la chaine de caractère à afficher
     print(angleIHM)
-    Larcay.textes[5][0] = "Nord magnetique : "+angleIHM
+    Larcay.textes[5][0] = "Nord magnetique : "+angleIHM #actualise l'affichage
     return garder
 
-
+#toutes les fonctions suivantes servent à rentrer le numéro appuyé dans la variable
 def numero0():
     a = "0"
     saisie(a)
@@ -623,13 +643,16 @@ def numero9():
     saisie(j)
     
 def stop():
+    """permet d'arrter le mouvement de la parabole"""
     rotor.stop()
     verin.arreter()
 
 def actionVide():
+    """permet de relacher le bouton sans faire une action"""
     pass
 
-def afficher():#Recuperation du nord magnétique 
+def afficher(): 
+    """Récupération du nord magnétique"""
      total = []
      total = saisie("")
      total.append("")
@@ -641,7 +664,7 @@ def afficher():#Recuperation du nord magnétique
      Angle = premier_chiffre+second_chiffre+troisieme_chiffre
      #print(Angle)
      return float(Angle)+Larcay.azimPara #Angle GPS + Décalage Nord Magnétique
-##
+    
 def auto():
     auto_angle = afficher()
     a,b,c,d = GPS()
@@ -718,13 +741,18 @@ def Affinement() :
     asservissement.algorithme()
 
 def valider():
-    if(Larcay.textes[6][0]=="Mettez le rotor a 0 degre"):
+    """action du bouton valider pour la calibration"""
+    
+    #calibre le rotor sur la gauche
+    if(Larcay.textes[6][0]=="Mettez le rotor a 0 degre"): #premier appuis sur le bouton valider
         rotor.calibrationGauche()
         Larcay.textes[6][0]="Mettez le rotor a 360 degre"
         print("0 fait")
-    else:
+    else: #deuxième appuis
         rotor.calibrationDroite()
         print("360 fait")
+        
+        #réaffiche la page principale
         Larcay.textes[6][5]=False
         Larcay.Valider.state = False
         Larcay.Valider.etat = False
@@ -759,6 +787,7 @@ def valider():
         Larcay.textes[6][5] = False
 
 def Quitter():
+    """Quitte l'appli"""
     print("Quit")
     rotor.ser.write('M000\r\n')
 ##    verin.descendre()
@@ -766,6 +795,7 @@ def Quitter():
 ##    verin.stop()
     pygame.quit()
 ##    sys.exit()
+
 def getData():
     data = []
     r = requests.get("http://192.168.100.1/index.cgi?page=modemStatusData")
